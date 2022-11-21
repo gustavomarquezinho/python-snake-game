@@ -23,6 +23,7 @@ KEYS_RIGHT = (
     pygame.locals.K_d
 )
 
+
 class Snake():
     def __init__(self) -> None:
         self.window_width = 600
@@ -38,18 +39,21 @@ class Snake():
 
         pygame.init()
 
-        self.display = pygame.display.set_mode((self.window_width, self.window_height), )
-        self.display.fill((19, 41, 61))
-
-        pygame.display.set_caption('Snake Game')
-
+        self.display = pygame.display.set_mode((self.window_width, self.window_height))
         self.clock = pygame.time.Clock()
+
+    def start_game(self, difficulty: int) -> None:
+        pygame.display.set_caption('Snake Game')
+        self.display.fill((19, 41, 61))
+        
         self.move_direction = None
+
+        if len(self.snake):
+            self.snake.clear()
 
         self.create_snake()
         self.create_food(new_pos=True)
 
-    def run_game(self, difficulty: int) -> None:
         self.difficulty = difficulty
         self.fps = 8 + difficulty + 1
 
@@ -57,8 +61,12 @@ class Snake():
             self.clock.tick(self.fps)
 
             for event in pygame.event.get():
-                if event.type == pygame.locals.QUIT or len(self.snake) >= self.max_size:
-                    self.game_over()
+                if event.type == pygame.locals.QUIT:
+                    pygame.quit()
+                    quit()
+
+                elif len(self.snake) >= self.max_size:
+                    self.restart_game()
 
                 elif event.type == pygame.locals.KEYDOWN:
                     can_change_direction = True
@@ -69,7 +77,7 @@ class Snake():
                     elif self.move_direction in KEYS_UP or self.move_direction in KEYS_DOWN:
                         if event.key in KEYS_UP or event.key in KEYS_DOWN:
                             can_change_direction = False
-        
+
                     elif self.move_direction in KEYS_LEFT or self.move_direction in KEYS_RIGHT:
                         if event.key in KEYS_LEFT or event.key in KEYS_RIGHT:
                             can_change_direction = False
@@ -88,7 +96,7 @@ class Snake():
                     self.snake_x += self.snake_size
 
                 if self.is_snake_collided():
-                    self.game_over()
+                    self.restart_game()
 
                 if self.snake_x < 0:
                     self.snake_x = self.window_width
@@ -173,6 +181,5 @@ class Snake():
 
         self.snake.append((snake_end_x, snake_end_y, self.snake_size, self.snake_size))
 
-    def game_over(self):
-        pygame.quit()
-        quit()
+    def restart_game(self):
+        self.start_game(self.difficulty)
