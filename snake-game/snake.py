@@ -63,7 +63,10 @@ class Snake():
                 elif event.type == pygame.locals.KEYDOWN:
                     can_change_direction = True
 
-                    if self.move_direction in KEYS_UP or self.move_direction in KEYS_DOWN:
+                    if event.key not in (*KEYS_UP, *KEYS_LEFT, *KEYS_DOWN, *KEYS_RIGHT):
+                        can_change_direction = False
+
+                    elif self.move_direction in KEYS_UP or self.move_direction in KEYS_DOWN:
                         if event.key in KEYS_UP or event.key in KEYS_DOWN:
                             can_change_direction = False
         
