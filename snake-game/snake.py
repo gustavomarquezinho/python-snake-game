@@ -3,6 +3,26 @@ import pygame
 import pygame.locals
 
 
+KEYS_UP = (
+    pygame.locals.K_UP,
+    pygame.locals.K_w
+)
+
+KEYS_LEFT = (
+    pygame.locals.K_LEFT,
+    pygame.locals.K_a
+)
+
+KEYS_DOWN = (
+    pygame.locals.K_DOWN,
+    pygame.locals.K_s
+)
+
+KEYS_RIGHT = (
+    pygame.locals.K_RIGHT,
+    pygame.locals.K_d
+)
+
 class Snake():
     def __init__(self) -> None:
         self.window_width = 600
@@ -43,26 +63,26 @@ class Snake():
                 elif event.type == pygame.locals.KEYDOWN:
                     can_change_direction = True
 
-                    if self.move_direction == pygame.locals.K_LEFT or self.move_direction == pygame.locals.K_RIGHT:
-                        if event.key == pygame.locals.K_LEFT or event.key == pygame.locals.K_RIGHT:
+                    if self.move_direction in KEYS_UP or self.move_direction in KEYS_DOWN:
+                        if event.key in KEYS_UP or event.key in KEYS_DOWN:
                             can_change_direction = False
-
-                    elif self.move_direction == pygame.locals.K_UP or self.move_direction == pygame.locals.K_DOWN:
-                        if event.key == pygame.locals.K_UP or event.key == pygame.locals.K_DOWN:
+        
+                    elif self.move_direction in KEYS_LEFT or self.move_direction in KEYS_RIGHT:
+                        if event.key in KEYS_LEFT or event.key in KEYS_RIGHT:
                             can_change_direction = False
 
                     if can_change_direction:
                         self.move_direction = event.key
 
             if self.move_direction is not None:
-                if self.move_direction == pygame.locals.K_LEFT:
-                    self.snake_x -= self.snake_size
-                elif self.move_direction == pygame.locals.K_RIGHT:
-                    self.snake_x += self.snake_size
-                elif self.move_direction == pygame.locals.K_UP:
+                if self.move_direction in KEYS_UP:
                     self.snake_y -= self.snake_size
-                elif self.move_direction == pygame.locals.K_DOWN:
+                elif self.move_direction in KEYS_LEFT:
+                    self.snake_x -= self.snake_size
+                elif self.move_direction in KEYS_DOWN:
                     self.snake_y += self.snake_size
+                elif self.move_direction in KEYS_RIGHT:
+                    self.snake_x += self.snake_size
 
                 if self.is_snake_collided():
                     self.game_over()
@@ -139,14 +159,14 @@ class Snake():
         snake_end_x = self.snake[len(self.snake) - 1][0]
         snake_end_y = self.snake[len(self.snake) - 1][1]
 
-        if self.move_direction == pygame.locals.K_LEFT:
+        if self.move_direction in KEYS_UP:
+            snake_end_y += self.snake_size
+        elif self.move_direction in KEYS_LEFT:
             snake_end_x += self.snake_size
-        elif self.move_direction == pygame.locals.K_RIGHT:
+        elif self.move_direction in KEYS_DOWN:
+            snake_end_y += self.snake_size
+        elif self.move_direction in KEYS_RIGHT:
             snake_end_x -= self.snake_size
-        elif self.move_direction == pygame.locals.K_UP:
-            snake_end_y += self.snake_size
-        elif self.move_direction == pygame.locals.K_DOWN:
-            snake_end_y += self.snake_size
 
         self.snake.append((snake_end_x, snake_end_y, self.snake_size, self.snake_size))
 
