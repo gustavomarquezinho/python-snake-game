@@ -133,7 +133,7 @@ class Snake():
                 self.food_y = self.get_nearest_divisible(self.food_y, self.snake_size)
 
             for info in self.snake:
-                if info[:2] == (self.snake_x, self.food_x, self.food_y):
+                if info[:2] == (self.food_x, self.food_y):
                     return self.create_food(new_pos)
 
         pygame.draw.rect(surface=self.display, color=(220, 20, 60), rect=(self.food_x, self.food_y, self.food_size, self.food_size))
