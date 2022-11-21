@@ -90,12 +90,6 @@ class Snake():
 
             pygame.display.update()
 
-    def get_nearest_divisible(self, num: int, divisor: int) -> int:
-        for i in range(1, divisor + 1):
-            if (num + i) % divisor == 0:
-                return num + i
-        return num
-
     def is_snake_collided(self) -> bool:
         if self.difficulty >= 1:
             if self.snake_x < 0 or self.snake_x > self.window_width:
@@ -112,11 +106,8 @@ class Snake():
         self.snake_x = randint(self.snake_size, self.window_width - (self.snake_size * 2))
         self.snake_y = randint(self.snake_size, self.window_height - (self.snake_size * 2))
 
-        if self.snake_x % self.snake_size != 0:
-            self.snake_x = self.get_nearest_divisible(self.snake_x, self.snake_size)
-
-        if self.snake_y % self.snake_size != 0:
-            self.snake_y = self.get_nearest_divisible(self.snake_y, self.snake_size)
+        self.snake_x = (self.snake_x // self.snake_size) * self.snake_size
+        self.snake_y = (self.snake_y // self.snake_size) * self.snake_size
 
         pygame.draw.rect(surface=self.display, color=(255, 232, 115), rect=(self.snake_x, self.snake_y, self.snake_size, self.snake_size))
         self.snake.append((self.snake_x, self.snake_y, self.snake_size, self.snake_size))
@@ -126,11 +117,8 @@ class Snake():
             self.food_x = randint(self.food_size, self.window_width - (self.food_size * 2))
             self.food_y = randint(self.food_size, self.window_height - (self.food_size * 2))
 
-            if self.food_x % self.snake_size != 0:
-                self.food_x = self.get_nearest_divisible(self.food_x, self.snake_size)
-
-            if self.food_y % self.snake_size != 0:
-                self.food_y = self.get_nearest_divisible(self.food_y, self.snake_size)
+            self.food_x = (self.food_x // self.food_size) * self.food_size
+            self.food_y = (self.food_y // self.food_size) * self.food_size
 
             for info in self.snake:
                 if info[:2] == (self.food_x, self.food_y):
