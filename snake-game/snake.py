@@ -176,19 +176,7 @@ class Snake():
         pygame.draw.rect(surface=self.display, color=(255, 232, 115), rect=self.snake[0])
 
     def extend_snake(self) -> None:
-        snake_end_x = self.snake[len(self.snake) - 1][0]
-        snake_end_y = self.snake[len(self.snake) - 1][1]
-
-        if self.move_direction in KEYS_UP:
-            snake_end_y += self.snake_size
-        elif self.move_direction in KEYS_LEFT:
-            snake_end_x += self.snake_size
-        elif self.move_direction in KEYS_DOWN:
-            snake_end_y += self.snake_size
-        elif self.move_direction in KEYS_RIGHT:
-            snake_end_x -= self.snake_size
-
-        self.snake.append((snake_end_x, snake_end_y, self.snake_size, self.snake_size))
+        self.snake.append((0, 0, self.snake_size, self.snake_size))
 
     def restart_game(self):
         self.start_game(self.difficulty)
