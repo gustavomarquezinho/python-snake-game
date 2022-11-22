@@ -45,12 +45,13 @@ class Snake():
     def start_game(self, difficulty: int) -> None:
         pygame.display.set_caption('Snake Game')
         self.display.fill((19, 41, 61))
-        
+
         self.move_direction = None
 
         if len(self.snake):
             self.snake.clear()
 
+        self.create_lines()
         self.create_snake()
         self.create_food(new_pos=True)
 
@@ -108,6 +109,7 @@ class Snake():
                     self.snake_y = 0
 
                 self.display.fill((19, 41, 61))
+                self.create_lines()
 
                 if (self.snake_x, self.snake_y) == (self.food_x, self.food_y):
                     pygame.display.set_caption(f'Snake Game ({len(self.snake)} points)')
@@ -157,6 +159,13 @@ class Snake():
 
         pygame.draw.rect(surface=self.display, color=(220, 20, 60), rect=(self.food_x, self.food_y, self.food_size, self.food_size))
         return True
+
+    def create_lines(self) -> None:
+        for x in range(0, self.window_width, self.food_size):
+            pygame.draw.line(self.display, (28, 50, 70), (x, 0), (x, self.window_height))
+
+        for y in range(0, self.window_height, self.food_size):
+            pygame.draw.line(self.display, (28, 50, 70), (0, y), (self.window_width, y))
 
     def move_snake(self) -> None:
         for i in range(len(self.snake) - 1, 0, -1):
