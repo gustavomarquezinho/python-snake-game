@@ -96,17 +96,15 @@ class Snake():
                 elif self.move_direction in KEYS_RIGHT:
                     self.snake_x += self.snake_size
 
-                if self.is_snake_collided():
-                    self.restart_game()
-
-                if self.snake_x < 0:
-                    self.snake_x = self.window_width
-                elif self.snake_x > self.window_width:
-                    self.snake_x = 0
-                elif self.snake_y < 0:
-                    self.snake_y = self.window_height
-                elif self.snake_y > self.window_height:
-                    self.snake_y = 0
+                if self.difficulty < 1:
+                    if self.snake_x < 0:
+                        self.snake_x = self.window_width
+                    elif self.snake_x > self.window_width:
+                        self.snake_x = 0
+                    elif self.snake_y < 0:
+                        self.snake_y = self.window_height
+                    elif self.snake_y > self.window_height:
+                        self.snake_y = 0
 
                 self.display.fill((19, 41, 61))
                 self.create_lines()
@@ -120,6 +118,9 @@ class Snake():
                     self.create_food(new_pos=False)
 
                 self.move_snake()
+
+                if self.is_snake_collided():
+                    self.restart_game()
 
             pygame.display.update()
 
